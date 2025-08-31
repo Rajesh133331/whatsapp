@@ -1,0 +1,19 @@
+    const {email,password} = req.body;
+    try{
+        const userexist = await user.findOne({where:{Email:email}})
+        if(!userexist){
+            return res.json({data:"notexist"})
+        }
+        const decrypt  = await bcrypt.compare(password,userexist.Password)
+        if(decrypt){
+            res.status(200).json({data:"success"})
+        }
+        else{
+          return res.json({data:"wrongpassword"})
+        }
+    }
+    catch(err){
+        console.log(err,err.message)
+        return res.json({data:"error"})
+    }
+})
