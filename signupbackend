@@ -1,0 +1,22 @@
+app.post('/signup',async(req,res)=>{
+    const {name,mobilenumber,email,password} = req.body;
+    try{
+        const userexist = await user.findOne({ where: { Email: email.toLowerCase() } });
+        console.log(userexist)
+        if(userexist){
+            return res.json({data:"exist"})
+        }
+        const hashed = await bcrypt.hash(password,10)
+        await user.create({
+            Name:name,
+            Email:email.toLowerCase(),
+            Mobilenumber:mobilenumber,
+            Password:hashed
+        })
+        return res.status(201).json({data:"success"})
+    }
+    catch(err){
+        console.log(err.message)
+       return res.status(500).json({data:"failed"})
+    }
+})
