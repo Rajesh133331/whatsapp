@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            box-sizing: border-box;
+            background-color: #E6F0FF;
+        }
+        .signup-input{
+            height:35px;
+            width:250px;
+            margin-top: 10px;
+        }
+        .signup-input::placeholder{
+            text-align: center;
+        }
+        #signup-btn{
+            margin-top: 10px;
+            margin-left: 60px;
+            width: 120px;
+            height: 35px;
+            border-radius: 10px;
+            color: white;
+            background-color: #FF4422;
+            border: #FF4422;
+        }
+        #welcomeuser{
+            color: white;
+        }
+        #sign-in-anchor{
+            text-decoration: none;
+            border:1px solid white;
+            padding: 10px;
+            display: inline-block;
+            width: 120px;
+            text-align: center;
+            border-radius: 10px;   
+            color: white;
+        }
+        .container{
+            display: flex;
+            margin-left:px;
+            margin-right: 30px;
+            margin-top: 30px;
+        }
+        #signup-show{
+            border:1px solid #FF4422;
+            padding:30px;
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+        }
+        #signupform{
+            padding: 30px;
+            background: #fff; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.1)
+        }
+        .pcontentsignup{
+            color: white;
+            font-size: large;
+        }
+        #heading{
+            padding: 60px;
+            color: #1A237E;
+        }
+        #demo{
+            text-decoration: none;
+        }
+        #quote{
+            color: #E74C3C;
+            
+        }
+        h4{
+            color: #2C3E50;
+            background-color: #FDF6E3;
+            margin-top: 30px;
+        }
+        #passwordwrong{
+            color:red;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="marquee-container">
+  <marquee>Use code <strong>SAVE50</strong> to get 50% discount! on Premium services Hurry Up</marquee>
+</div>
+
+    <div class="container">
+        <div id="heading">
+            <br><br><br><br><br><br>
+                <h2>TRACK YOUR EXPENSES LIKE NEVER BEFORE</h2>
+                <h4>“Do not save what is left after spending, but spend what is left after saving.” -  <small id="quote">Warren Buffett</small></h4>
+        </div>
+    <div id="signup-show">
+        <h1 id="welcomeuser">WELCOME BACK!</h1>
+        <p class="pcontentsignup">To keep connected with us please login</p>
+        <p class="pcontentsignup">with your personal info</p><br><br>
+        <a href="http://127.0.0.1:5500/login.html" id="sign-in-anchor">SIGN IN</a>
+    </div>
+    <div id="signupform">
+        <h1>Create Account</h1>
+        <form onsubmit="save(event)">
+            <input type="text" id="signup-name" class="signup-input" placeholder="Enter Name" autocomplete="off" required><br>
+            <input type="text" id="signup-mobile" class="signup-input" placeholder="Mobile Number" autocomplete="off" required><br>
+            <input type="email" id="signup-email" class="signup-input" placeholder="Email" autocomplete="off" required><br>
+            <input type="password" id="signup-password" class="signup-input" placeholder="Password" required><br>
+            <input type="password" id="signup-repassword" class="signup-input" placeholder="Re Enter Password" required>
+            <p id="passwordwrong"></p>
+            <button id="signup-btn">SIGN UP</button>
+        </form>
+
+    </div>
+    </div>
+   <small><a>Privacy & Policy  |</a></small>
+   <small> <a style="margin-left: 10px;">T&C   |</a></small>
+   <small style="margin-left: 10px;"><a id="demo" href="mailto:218x1a0482@khitguntur.ac.in">help@expensetracker.com</a></small>
+   <script src="https://cdn.jsdelivr.net/npm/axios@1.6.8/dist/axios.min.js"></script>
+<script>
+    function save(event){
+        event.preventDefault()
+    let pass1 = document.getElementById("signup-password").value;
+    let pass2 = document.getElementById("signup-repassword").value;
+    let name = document.getElementById("signup-name").value;
+    let mobile = document.getElementById("signup-mobile").value;
+    let email = document.getElementById("signup-email").value;
+
+    //saving  data into object
+    let obj = {
+        name:name,
+        mobilenumber:mobile,
+        email:email,
+        password:pass1
+    }
+
+
+    document.getElementById("signup-password").addEventListener("focus", () => {
+    document.getElementById("passwordwrong").innerHTML = "" });
+
+    document.getElementById("signup-repassword").addEventListener("focus", () => {
+    document.getElementById("passwordwrong").innerHTML = "" });
+
+    //password same checking code here in signup
+    if(pass1!==pass2){
+        document.getElementById("passwordwrong").innerHTML = "* Both password should be same";
+        return;
+    }
+    else{
+        axios.post("http://localhost:8080/signup",obj)
+        .then((result)=>{
+            console.log(result)
+            if(result.data.data == "exist"){
+                alert("User already exist please login")
+                window.location.href="http://127.0.0.1:5500/login.html"
+            }
+            else if(result.data.data == "success"){
+                alert("successfull signup,Please login into account")
+                window.location.href="http://127.0.0.1:5500/login.html"
+            }
+            else{
+                 alert("Internal server error,please try after some time")
+            }
+        })
+    }
+
+}
+</script>
+
+</body>
+</html>
